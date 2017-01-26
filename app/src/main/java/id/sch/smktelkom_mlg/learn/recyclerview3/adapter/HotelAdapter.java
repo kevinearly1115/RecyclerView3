@@ -1,6 +1,8 @@
 package id.sch.smktelkom_mlg.learn.recyclerview3.adapter;
 
 
+import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +15,13 @@ import java.util.ArrayList;
 import id.sch.smktelkom_mlg.learn.recyclerview3.R;
 import id.sch.smktelkom_mlg.learn.recyclerview3.model.Hotel;
 
+
 /**
+
  * Created by KEVIN_E15 on 1/5/2017.
+
  */
+
 
 public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.ViewHolder> {
 
@@ -23,10 +29,18 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.ViewHolder> 
     ArrayList<Hotel> hotelList;
 
 
-    public HotelAdapter(ArrayList<Hotel> hotelList) {
+    IHotelAdapter mIHotelAdapter;
+
+
+    public HotelAdapter(Context context, ArrayList<Hotel> hotelList) {
+
 
 
         this.hotelList = hotelList;
+
+
+        mIHotelAdapter = (IHotelAdapter) context;
+
 
 
     }
@@ -35,16 +49,21 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.ViewHolder> 
     @Override
 
 
+
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
 
 
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list, parent, false);
 
 
+
         ViewHolder vh = new ViewHolder(v);
 
 
+
         return vh;
+
 
 
     }
@@ -65,7 +84,7 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.ViewHolder> 
         holder.tvDeskripsi.setText(hotel.deskripsi);
 
 
-        holder.ivFoto.setImageDrawable(hotel.foto);
+        holder.ivFoto.setImageURI(Uri.parse(hotel.foto));
 
 
     }
@@ -87,6 +106,20 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.ViewHolder> 
 
 
     }
+
+
+    public interface IHotelAdapter {
+
+
+        void doClick(int pos);
+
+
+    }
+
+
+
+
+
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -114,6 +147,29 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.ViewHolder> 
 
 
             tvDeskripsi = (TextView) itemView.findViewById(R.id.textViewDeskripsi);
+
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+
+
+                @Override
+
+
+                public void onClick(View v) {
+
+
+                    mIHotelAdapter.doClick(getAdapterPosition());
+
+
+                }
+
+
+            });
+
+
+
+
+
 
 
         }
