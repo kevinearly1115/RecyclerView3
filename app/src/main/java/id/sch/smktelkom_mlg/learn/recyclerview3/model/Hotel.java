@@ -1,0 +1,39 @@
+package id.sch.smktelkom_mlg.learn.recyclerview3.model;
+
+
+import android.graphics.drawable.Drawable;
+
+
+/**
+ * Created by KEVIN_E15 on 1/5/2017.
+ */
+
+
+public class Hotel {
+
+
+    public String judul;
+
+
+    public String deskripsi;
+
+
+    public Drawable foto;
+
+
+    public Hotel(String judul, String deskripsi, Drawable foto) {
+
+
+        this.judul = judul;
+
+
+        this.deskripsi = deskripsi;
+
+
+        this.foto = foto;
+
+
+    }
+
+
+}
