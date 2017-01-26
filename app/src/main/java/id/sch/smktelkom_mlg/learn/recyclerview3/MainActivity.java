@@ -8,9 +8,11 @@ import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -54,6 +56,23 @@ public class MainActivity extends AppCompatActivity implements HotelAdapter.IHot
 
 
     int itemPos;
+
+
+    ArrayList<Hotel> mListAll = new ArrayList<>();
+
+
+    boolean isFiltered;
+
+
+    ArrayList<Integer> mListMapFilter = new ArrayList<>();
+
+
+    String mQuery;
+
+
+
+
+
 
 
     @Override
@@ -249,31 +268,165 @@ public class MainActivity extends AppCompatActivity implements HotelAdapter.IHot
     public boolean onCreateOptionsMenu(Menu menu) {
 
 
+
         // Inflate the menu; this adds items to the action bar if it is present.
+
 
 
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
 
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+
+
+        SearchView serView = (SearchView)
+
+
+                MenuItemCompat.getActionView(searchItem);
+
+
+        serView.setOnQueryTextListener(
+
+
+                new SearchView.OnQueryTextListener() {
+
+
+                    @Override
+
+
+                    public boolean onQueryTextSubmit(String query) {
+
+
+                        return false;
+
+
+                    }
+
+
+                    @Override
+
+
+                    public boolean onQueryTextChange(String newText) {
+
+
+                        mQuery = newText.toLowerCase();
+
+
+                        doFilter(mQuery);
+
+
+                        return true;
+
+
+                    }
+
+
+                }
+
+
+        );
+
+
+
         return true;
+
 
 
     }
 
 
+    private void doFilter(String query) {
+
+
+        if (!isFiltered) {
+
+
+            mListAll.clear();
+
+
+            mListAll.addAll(mlist);
+
+
+            isFiltered = true;
+
+
+        }
+
+
+        mlist.clear();
+
+
+        if (query == null || query.isEmpty()) {
+
+
+            mlist.addAll(mListAll);
+
+
+            isFiltered = false;
+
+
+        } else {
+
+
+            mListMapFilter.clear();
+
+
+            for (int i = 0; i < mListAll.size(); i++) {
+
+
+                Hotel hotel = mListAll.get(i);
+
+
+                if (hotel.judul.toLowerCase().contains(query) ||
+
+
+                        hotel.lokasi.toLowerCase().contains(query)) {
+
+
+                    mlist.add(hotel);
+
+
+                    mListMapFilter.add(i);
+
+
+                }
+
+
+            }
+
+
+        }
+
+
+        mAdapter.notifyDataSetChanged();
+
+
+    }
+
+
+
+
+
+
+
     @Override
+
 
 
     public boolean onOptionsItemSelected(MenuItem item) {
 
 
+
         // Handle action bar item clicks here. The action bar will
+
 
 
         // automatically handle clicks on the Home/Up button, so long
 
 
+
         // as you specify a parent activity in AndroidManifest.xml.
+
 
 
         int id = item.getItemId();
@@ -282,10 +435,13 @@ public class MainActivity extends AppCompatActivity implements HotelAdapter.IHot
         //noinspection SimplifiableIfStatement
 
 
+
         if (id == R.id.action_settings) {
 
 
+
             return true;
+
 
 
         }
@@ -294,10 +450,12 @@ public class MainActivity extends AppCompatActivity implements HotelAdapter.IHot
         return super.onOptionsItemSelected(item);
 
 
+
     }
 
 
     @Override
+
 
 
     public void doClick(int pos) {
@@ -351,6 +509,10 @@ public class MainActivity extends AppCompatActivity implements HotelAdapter.IHot
         mlist.remove(itemPos);
 
 
+        if (isFiltered) mListAll.remove(mListMapFilter.get(itemPos).intValue());
+
+
+
         mAdapter.notifyDataSetChanged();
 
 
@@ -367,6 +529,10 @@ public class MainActivity extends AppCompatActivity implements HotelAdapter.IHot
 
 
                         mlist.add(itemPos, hotel);
+
+
+                        if (isFiltered) mListAll.add(mListMapFilter.get(itemPos), hotel);
+
 
 
                         mAdapter.notifyDataSetChanged();
@@ -419,7 +585,14 @@ public class MainActivity extends AppCompatActivity implements HotelAdapter.IHot
             mlist.add(hotel);
 
 
-            mAdapter.notifyDataSetChanged();
+            if (isFiltered) mListAll.add(hotel);
+
+
+            doFilter(mQuery);
+
+
+            //mAdapter.notifyDataSetChanged();
+
 
 
         } else if (requestCode == REQUEST_CODE_EDIT && resultCode == RESULT_OK) {
@@ -431,7 +604,15 @@ public class MainActivity extends AppCompatActivity implements HotelAdapter.IHot
             mlist.remove(itemPos);
 
 
+            if (isFiltered) mListAll.remove(mListMapFilter.get(itemPos).intValue());
+
+
+
             mlist.add(itemPos, hotel);
+
+
+            if (isFiltered) mListAll.add(mListMapFilter.get(itemPos), hotel);
+
 
 
             mAdapter.notifyDataSetChanged();

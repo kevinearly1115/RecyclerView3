@@ -3,6 +3,7 @@ package id.sch.smktelkom_mlg.learn.recyclerview3;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
@@ -71,10 +72,13 @@ public class InputActivity extends AppCompatActivity {
         etDeskripsi = (EditText) findViewById(R.id.editTextDeskripsi);
 
 
+
         etDetail = (EditText) findViewById(R.id.editTextDetail);
 
 
+
         etLokasi = (EditText) findViewById(R.id.editTextLokasi);
+
 
 
         ivFoto = (ImageView) findViewById(R.id.imageViewFoto);
@@ -83,19 +87,25 @@ public class InputActivity extends AppCompatActivity {
         hotel = (Hotel) getIntent().getSerializableExtra(MainActivity.HOTEL);
 
 
+
         if (hotel != null) {
+
 
 
             setTitle("Edit" + hotel.judul);
 
 
+
             fillData();
+
 
 
         } else {
 
 
+
             setTitle("New Hotel");
+
 
 
         }
@@ -109,13 +119,17 @@ public class InputActivity extends AppCompatActivity {
         ivFoto.setOnClickListener(new View.OnClickListener() {
 
 
+
             @Override
+
 
 
             public void onClick(View v) {
 
 
+
                 pickPhoto();
+
 
 
             }
@@ -309,7 +323,26 @@ public class InputActivity extends AppCompatActivity {
     private void pickPhoto() {
 
 
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        Intent intent;
+
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+
+
+            intent = new Intent(Intent.ACTION_GET_CONTENT);
+
+
+        } else {
+
+
+            intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+
+
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+
+        }
+
 
 
         intent.setType("image/*");
