@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,6 +18,7 @@ import id.sch.smktelkom_mlg.learn.recyclerview3.R;
 import id.sch.smktelkom_mlg.learn.recyclerview3.model.Hotel;
 
 
+
 /**
 
  * Created by KEVIN_E15 on 1/5/2017.
@@ -23,10 +26,12 @@ import id.sch.smktelkom_mlg.learn.recyclerview3.model.Hotel;
  */
 
 
+
 public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.ViewHolder> {
 
 
     ArrayList<Hotel> hotelList;
+
 
 
     IHotelAdapter mIHotelAdapter;
@@ -37,6 +42,7 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.ViewHolder> 
 
 
         this.hotelList = hotelList;
+
 
 
         mIHotelAdapter = (IHotelAdapter) context;
@@ -72,16 +78,21 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.ViewHolder> 
     @Override
 
 
+
     public void onBindViewHolder(ViewHolder holder, int position) {
+
 
 
         Hotel hotel = hotelList.get(position);
 
 
+
         holder.tvJudul.setText(hotel.judul);
 
 
+
         holder.tvDeskripsi.setText(hotel.deskripsi);
+
 
 
         holder.ivFoto.setImageURI(Uri.parse(hotel.foto));
@@ -114,6 +125,19 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.ViewHolder> 
         void doClick(int pos);
 
 
+        void doEdit(int pos);
+
+
+        void doDelete(int pos);
+
+
+        void doFav(int pos);
+
+
+        void doShare(int pos);
+
+
+
     }
 
 
@@ -134,6 +158,23 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.ViewHolder> 
         TextView tvDeskripsi;
 
 
+        Button bEdit;
+
+
+        Button bDelete;
+
+
+        ImageButton ibFav;
+
+
+        ImageButton ibShare;
+
+
+
+
+
+
+
         public ViewHolder(View itemView) {
 
 
@@ -149,6 +190,19 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.ViewHolder> 
             tvDeskripsi = (TextView) itemView.findViewById(R.id.textViewDeskripsi);
 
 
+            bEdit = (Button) itemView.findViewById(R.id.buttonEdit);
+
+
+            bDelete = (Button) itemView.findViewById(R.id.buttonDelete);
+
+
+            ibFav = (ImageButton) itemView.findViewById(R.id.buttonFavorite);
+
+
+            ibShare = (ImageButton) itemView.findViewById(R.id.buttonShare);
+
+
+
             itemView.setOnClickListener(new View.OnClickListener() {
 
 
@@ -159,6 +213,78 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.ViewHolder> 
 
 
                     mIHotelAdapter.doClick(getAdapterPosition());
+
+
+                }
+
+
+            });
+
+
+            bEdit.setOnClickListener(new View.OnClickListener() {
+
+
+                @Override
+
+
+                public void onClick(View v) {
+
+
+                    mIHotelAdapter.doEdit(getAdapterPosition());
+
+
+                }
+
+
+            });
+
+
+            bDelete.setOnClickListener(new View.OnClickListener() {
+
+
+                @Override
+
+
+                public void onClick(View v) {
+
+
+                    mIHotelAdapter.doDelete(getAdapterPosition());
+
+
+                }
+
+
+            });
+
+
+            ibFav.setOnClickListener(new View.OnClickListener() {
+
+
+                @Override
+
+
+                public void onClick(View v) {
+
+
+                    mIHotelAdapter.doFav(getAdapterPosition());
+
+
+                }
+
+
+            });
+
+
+            ibShare.setOnClickListener(new View.OnClickListener() {
+
+
+                @Override
+
+
+                public void onClick(View v) {
+
+
+                    mIHotelAdapter.doShare(getAdapterPosition());
 
 
                 }

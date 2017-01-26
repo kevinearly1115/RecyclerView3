@@ -17,25 +17,33 @@ import id.sch.smktelkom_mlg.learn.recyclerview3.model.Hotel;
 public class InputActivity extends AppCompatActivity {
 
 
+
     static final int REQUEST_IMAGE_GET = 1;
+
 
 
     EditText etJudul;
 
 
+
     EditText etDeskripsi;
+
 
 
     EditText etDetail;
 
 
+
     EditText etLokasi;
+
 
 
     ImageView ivFoto;
 
 
+
     Uri uriFoto;
+
 
 
     Hotel hotel;
@@ -44,16 +52,20 @@ public class InputActivity extends AppCompatActivity {
     @Override
 
 
+
     protected void onCreate(Bundle savedInstanceState) {
 
 
+
         super.onCreate(savedInstanceState);
+
 
 
         setContentView(R.layout.activity_input);
 
 
         etJudul = (EditText) findViewById(R.id.editTextNama);
+
 
 
         etDeskripsi = (EditText) findViewById(R.id.editTextDeskripsi);
@@ -66,6 +78,32 @@ public class InputActivity extends AppCompatActivity {
 
 
         ivFoto = (ImageView) findViewById(R.id.imageViewFoto);
+
+
+        hotel = (Hotel) getIntent().getSerializableExtra(MainActivity.HOTEL);
+
+
+        if (hotel != null) {
+
+
+            setTitle("Edit" + hotel.judul);
+
+
+            fillData();
+
+
+        } else {
+
+
+            setTitle("New Hotel");
+
+
+        }
+
+
+
+
+
 
 
         ivFoto.setOnClickListener(new View.OnClickListener() {
@@ -108,6 +146,35 @@ public class InputActivity extends AppCompatActivity {
 
 
     }
+
+
+    private void fillData() {
+
+
+        etJudul.setText(hotel.judul);
+
+
+        etDeskripsi.setText(hotel.deskripsi);
+
+
+        etDetail.setText(hotel.detail);
+
+
+        etLokasi.setText(hotel.lokasi);
+
+
+        uriFoto = Uri.parse(hotel.foto);
+
+
+        ivFoto.setImageURI(uriFoto);
+
+
+    }
+
+
+
+
+
 
 
     private void doSave() {

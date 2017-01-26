@@ -21,13 +21,25 @@ import id.sch.smktelkom_mlg.learn.recyclerview3.adapter.HotelAdapter;
 import id.sch.smktelkom_mlg.learn.recyclerview3.model.Hotel;
 
 
-public class MainActivity extends AppCompatActivity implements HotelAdapter.IHotelAdapter {
+public class MainActivity extends AppCompatActivity implements HotelAdapter.IHotelAdapter
+
+
+{
+
+
+
+
+
 
 
     public static final String HOTEL = "hotel";
 
 
+
     public static final int REQUEST_CODE_ADD = 88;
+
+
+    public static final int REQUEST_CODE_EDIT = 99;
 
 
 
@@ -38,9 +50,7 @@ public class MainActivity extends AppCompatActivity implements HotelAdapter.IHot
     HotelAdapter mAdapter;
 
 
-
-
-
+    int itemPos;
 
 
     @Override
@@ -81,10 +91,13 @@ public class MainActivity extends AppCompatActivity implements HotelAdapter.IHot
             public void onClick(View view) {
 
 
+
                 goAdd();
 
 
+
             }
+
 
 
         });
@@ -119,7 +132,9 @@ public class MainActivity extends AppCompatActivity implements HotelAdapter.IHot
     private void goAdd() {
 
 
+
         startActivityForResult(new Intent(this, InputActivity.class), REQUEST_CODE_ADD);
+
 
 
     }
@@ -157,10 +172,12 @@ public class MainActivity extends AppCompatActivity implements HotelAdapter.IHot
         TypedArray a = resources.obtainTypedArray(R.array.places_picture);
 
 
+
         String[] arFoto = new String[a.length()];
 
 
         for (int i = 0; i < arFoto.length; i++) {
+
 
 
             int id = a.getResourceId(i, 0);
@@ -288,6 +305,55 @@ public class MainActivity extends AppCompatActivity implements HotelAdapter.IHot
     @Override
 
 
+    public void doEdit(int pos) {
+
+
+        itemPos = pos;
+
+
+        Intent intent = new Intent(this, InputActivity.class);
+
+
+        intent.putExtra(HOTEL, mlist.get(pos));
+
+
+        startActivityForResult(intent, REQUEST_CODE_EDIT);
+
+
+    }
+
+
+    @Override
+
+
+    public void doDelete(int pos) {
+
+
+    }
+
+
+    @Override
+
+
+    public void doFav(int pos) {
+
+
+    }
+
+
+    @Override
+
+
+    public void doShare(int pos) {
+
+
+    }
+
+
+    @Override
+
+
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 
@@ -304,6 +370,22 @@ public class MainActivity extends AppCompatActivity implements HotelAdapter.IHot
 
 
             mAdapter.notifyDataSetChanged();
+
+
+        } else if (requestCode == REQUEST_CODE_EDIT && resultCode == RESULT_OK) {
+
+
+            Hotel hotel = (Hotel) data.getSerializableExtra(HOTEL);
+
+
+            mlist.remove(itemPos);
+
+
+            mlist.add(itemPos, hotel);
+
+
+            mAdapter.notifyDataSetChanged();
+
 
 
         }
