@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements HotelAdapter.IHot
     public static final int REQUEST_CODE_ADD = 88;
 
 
+
     public static final int REQUEST_CODE_EDIT = 99;
 
 
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements HotelAdapter.IHot
 
 
     HotelAdapter mAdapter;
+
 
 
     int itemPos;
@@ -183,13 +186,17 @@ public class MainActivity extends AppCompatActivity implements HotelAdapter.IHot
             int id = a.getResourceId(i, 0);
 
 
+
             arFoto[i] = ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
+
 
 
                     + resources.getResourcePackageName(id) + '/'
 
 
+
                     + resources.getResourceTypeName(id) + '/'
+
 
 
                     + resources.getResourceEntryName(id);
@@ -199,13 +206,16 @@ public class MainActivity extends AppCompatActivity implements HotelAdapter.IHot
         }
 
 
+
         a.recycle();
 
 
         for (int i = 0; i < arjudul.length; i++) {
 
 
+
             mlist.add(new Hotel(arjudul[i], arDeskripsi[i],
+
 
 
                     arDetail[i], arLokasi[i], arFoto[i]));
@@ -215,7 +225,9 @@ public class MainActivity extends AppCompatActivity implements HotelAdapter.IHot
         }
 
 
+
         mAdapter.notifyDataSetChanged();
+
 
 
     }
@@ -231,6 +243,7 @@ public class MainActivity extends AppCompatActivity implements HotelAdapter.IHot
 
 
     @Override
+
 
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -327,6 +340,43 @@ public class MainActivity extends AppCompatActivity implements HotelAdapter.IHot
 
 
     public void doDelete(int pos) {
+
+
+        itemPos = pos;
+
+
+        final Hotel hotel = mlist.get(pos);
+
+
+        mlist.remove(itemPos);
+
+
+        mAdapter.notifyDataSetChanged();
+
+
+        Snackbar.make(findViewById(R.id.fab), hotel.judul + " Terhapus", Snackbar.LENGTH_LONG)
+
+
+                .setAction("UNDO", new View.OnClickListener() {
+
+
+                    @Override
+
+
+                    public void onClick(View v) {
+
+
+                        mlist.add(itemPos, hotel);
+
+
+                        mAdapter.notifyDataSetChanged();
+
+
+                    }
+
+
+                }).show();
+
 
 
     }
